@@ -2,6 +2,24 @@
 
 Policy-enforced USDC vault for safe agent-to-agent payments on Base Sepolia testnet.
 
+## Purpose
+To enable **Autonomous Commerce** without the risk of catastrophic loss. It’s the "Corporate Credit Card" for AI agents—pre-approved limits, specific vendors, and a manager (you) who can cancel the charge before it clears.
+
+## Why it should win
+- **Solves a Real AI Problem**: Most agents today either have $0 (can't do anything) or full wallet access (dangerous). AgentPayGuard provides the "Middle Path": **Restricted Agency**.
+- **Infrastructure for OpenClaw**: Built as a native OpenClaw skill, it turns every OpenClaw instance into a safe economic actor.
+- **Battle-Tested Demo**: Our submission includes a live Base Sepolia demo that proactively tries (and fails) to perform replay attacks, overspending, and unauthorized transfers.
+- **Zero-Trust by Design**: Even if an agent's logic is compromised, the smart contract's policy (caps, allowlists, timelocks) acts as a hard physical barrier.
+
+## How it works (The Tech)
+- **EIP-712 Intent Escrow**: The "Buyer" (Human/Lead Agent) signs an offchain payment intent. This costs $0 in gas until the work is done.
+- **Cryptographic Enforcement**: The intent includes a `jobId`, `amount`, `recipient`, and `nonce`. The contract verifies the signature onchain before locking funds.
+- **Programmable Guardrails**:
+    - **Allowlisting**: Only pre-approved "Provider" agents can be paid.
+    - **Caps**: No single agent can spend more than $X per task without human intervention.
+    - **Timelock & Dispute**: Payouts are held in a 15-60s (demo) or multi-hour (production) window, giving the human time to "Dispute" and freeze funds if the agent goes rogue.
+- **Finalization**: Once the timelock expires and no dispute is raised, the Provider agent can finalize and claim their USDC.
+
 ## Overview
 
 Agents deposit USDC into the vault. Owners sign EIP-712 PaymentIntents, enforced by:
