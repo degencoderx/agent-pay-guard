@@ -1,0 +1,35 @@
+{
+  "name": "agent-pay-guard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "demo:local": "hardhat run scripts/demo-local.ts --network hardhat",
+    "demo:base": "hardhat run scripts/demo-base-sepolia.ts --network baseSepolia"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.4",
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.2",
+    "@types/chai": "^5.2.3",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^25.2.1",
+    "chai": "^6.2.2",
+    "hardhat": "^3.1.7",
+    "mocha": "^11.7.5",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "dotenv": "^17.2.4",
+    "ethers": "^6.16.0"
+  }
+}
