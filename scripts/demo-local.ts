@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { ethers, network } from "hardhat";
+import { network } from "hardhat";
 
 const ERC20_ABI = [
   "function balanceOf(address) view returns (uint256)",
@@ -7,12 +7,11 @@ const ERC20_ABI = [
   "function allowance(address,address) view returns (uint256)",
 ];
 
-function fmtUsdc(amount: bigint): string {
-  return ethers.formatUnits(amount, 6);
-}
-
 async function main(): Promise<void> {
+  const { ethers, provider: hProvider } = await (network as any).connect();
   const [buyer, provider] = await ethers.getSigners();
+
+  const fmtUsdc = (amount: bigint) => ethers.formatUnits(amount, 6);
 
   console.log(`\nLocal hardhat network`);
   console.log(`Buyer:    ${buyer.address}`);
@@ -94,8 +93,8 @@ async function main(): Promise<void> {
   console.log(`  provider: ${fmtUsdc(pb)} USDC`);
 
   // Fast-forward local time
-  await network.provider.send("evm_increaseTime", [timelockSeconds + 1]);
-  await network.provider.send("evm_mine");
+  await hProvider.send("evm_increaseTime", [timelockSeconds + 1]);
+  await hProvider.send("evm_mine");
 
   await (await guard.finalizeIntent(intentHash)).wait();
 

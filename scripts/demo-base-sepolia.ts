@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { ethers } from "hardhat";
+import { network } from "hardhat";
 
 const USDC_BASE_SEPOLIA = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
 const BASESCAN_TX = (txHash: string) => `https://sepolia.basescan.org/tx/${txHash}`;
@@ -19,17 +19,16 @@ function requireEnv(name: string): string {
   return v;
 }
 
-function fmtUsdc(amount: bigint): string {
-  return ethers.formatUnits(amount, 6);
-}
-
 async function main(): Promise<void> {
+  const { ethers, provider: hProvider } = await (network as any).connect();
   const providerPk = requireEnv("PROVIDER_PRIVATE_KEY");
 
-  const buyer = (await ethers.getSigners())[0];
-  const provider = new ethers.Wallet(providerPk, ethers.provider);
+  const fmtUsdc = (amount: bigint) => ethers.formatUnits(amount, 6);
 
-  const chain = await ethers.provider.getNetwork();
+  const buyer = (await ethers.getSigners())[0];
+  const provider = new ethers.Wallet(providerPk, hProvider);
+
+  const chain = await hProvider.getNetwork();
   console.log(`\nNetwork: ${chain.name} (chainId=${chain.chainId})`);
   console.log(`Buyer:    ${buyer.address}`);
   console.log(`Provider: ${provider.address}`);
